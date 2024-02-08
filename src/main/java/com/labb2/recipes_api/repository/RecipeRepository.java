@@ -11,6 +11,7 @@ public interface RecipeRepository extends MongoRepository<Recipe, String> {
 // behöver vi en metod signatur
 
     List<Recipe> findByTagsIn(List<String> tags);
+    List<Recipe> findByIngredienserIn(List<String> ingredienser);
 
 
 
