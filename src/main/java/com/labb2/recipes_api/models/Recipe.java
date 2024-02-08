@@ -3,6 +3,7 @@ package com.labb2.recipes_api.models;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -28,9 +29,12 @@ public class Recipe {
 
     //inbäddade kommentarer i dokumentet
 
-    private List <Comment> comments= new ArrayList<>();
+    //private List <Comment> comments= new ArrayList<>();
     //datatypen comment - våran egen comment model, klass
 
+    // referens med ObjectId
+    @DBRef    //ref till en annan collection i databasen
+    private List <Comment> comments= new ArrayList<>();
 
     // tom constructor
     // getter setter för alla förutom id

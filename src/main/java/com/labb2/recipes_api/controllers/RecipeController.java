@@ -1,6 +1,5 @@
 package com.labb2.recipes_api.controllers;
 
-import com.labb2.recipes_api.exception.EntityNotFoundException;
 import com.labb2.recipes_api.models.Comment;
 import com.labb2.recipes_api.models.Recipe;
 import com.labb2.recipes_api.services.RecipeService;
@@ -9,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/recipes")
@@ -25,8 +27,45 @@ public class RecipeController {
 
     }
 
-    //POST lägga till mommentar till recept
-    @PostMapping("/{recipeId/comments}")
+    //GET ALL
+    @GetMapping("/all")
+    public List<Recipe> getAllRecipes(){
+        return recipeService.getAllRecipes();
+    }
+
+
+    //GET by Id
+    @GetMapping("/{id}")
+    public ResponseEntity<Recipe> getRecipeById(@PathVariable String id){
+        Optional<Recipe> recipe=recipeService.getRecipeById(id);
+        return recipe.map(ResponseEntity::ok).orElseGet(()-> ResponseEntity.notFound().build());
+    }
+
+
+
+
+
+
+//POST lägga till kommentar till recept med ObjectId referens
+    @PostMapping("/{recipeId}/comments")
+       public ResponseEntity<Recipe> addCommentToRecipe(@PathVariable String recipeId, @RequestBody Comment comment)
+    {
+        //felhantering ekle
+        Recipe uppdatedRecipe=recipeService.commentToRecipe(recipeId, comment);
+        return ResponseEntity.ok(uppdatedRecipe);
+
+    }
+
+
+
+}
+
+
+
+
+
+    //POST lägga till mommentar till recept med inbäddad dokument
+   /* @PostMapping("/{recipeId}/comments")
     public ResponseEntity<Recipe> addCommentToRecipe(@PathVariable String recipeId, @RequestBody Comment comment){
 try{
     Recipe uppdatedRecipe= recipeService.addCommentToRecipe(recipeId, comment);
@@ -35,7 +74,7 @@ try{
 catch (EntityNotFoundException e)
 {
 return ResponseEntity.notFound().build();
-}}
+}}*/
 
 
 
@@ -50,4 +89,4 @@ return ResponseEntity.notFound().build();
 
 
 
-}
+
