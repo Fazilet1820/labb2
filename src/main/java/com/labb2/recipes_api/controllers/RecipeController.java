@@ -1,5 +1,6 @@
 package com.labb2.recipes_api.controllers;
 
+import com.labb2.recipes_api.exception.EntityNotFoundException;
 import com.labb2.recipes_api.models.Comment;
 import com.labb2.recipes_api.models.Recipe;
 import com.labb2.recipes_api.services.RecipeService;
@@ -42,8 +43,35 @@ public class RecipeController {
     }
 
 
+    //PUT  finns två typer  (generiska typ )
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateRecipe(@PathVariable String id, @Valid @RequestBody Recipe recipeDetails){
+        try{
+            Recipe updatedRecipe= recipeService.uppdateRecipe(id, recipeDetails);
+            return ResponseEntity.ok(updatedRecipe);
+
+        } catch (EntityNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
 
 
+
+    }
+
+//DELETE
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteRecipe(@PathVariable String id){
+        recipeService.deleteRecipe(id);
+        return ResponseEntity.ok("Recipe with id "+ id + " has been deleted");
+    }
+
+
+    //GET filtrera på taggar
+    @GetMapping("/search")
+    public List<Recipe> findRecipeByTags(@RequestParam List<String> tags){
+
+        return recipeService.findRecipesByTags(tags);
+    }
 
 
 //POST lägga till kommentar till recept med ObjectId referens

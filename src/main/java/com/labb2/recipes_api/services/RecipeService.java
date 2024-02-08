@@ -55,14 +55,14 @@ public class RecipeService {
                     if(uppdatedRecipe.getTitle() != null){
                         existingRecipe.setTitle(uppdatedRecipe.getTitle());
                     }
-                    if(uppdatedRecipe.getDescription() != null){
+                      if(uppdatedRecipe.getDescription() != null){
                         existingRecipe.setDescription(uppdatedRecipe.getDescription());
                     }
 
                     if(uppdatedRecipe.getIngredienser() != null){
                         existingRecipe.setIngredienser(uppdatedRecipe.getIngredienser());
                     }
-                    if(uppdatedRecipe.getTags() != null){
+                     if(uppdatedRecipe.getTags() != null){
                         existingRecipe.setTags(uppdatedRecipe.getTags());
                     }
 
@@ -75,7 +75,18 @@ public class RecipeService {
     }
 
 
+//delete
 
+    public void deleteRecipe(String id ){
+        recipeRepository.deleteById(id);
+    }
+
+
+    //filtrera på taggar
+    public List<Recipe> findRecipesByTags(List<String> tags){
+        return recipeRepository.findByTagsIn(tags);
+        //interface deki metod signatur kullandik
+    }
 
 
 
